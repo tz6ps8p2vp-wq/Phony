@@ -146,7 +146,7 @@ fun DashboardScreen(
     )
 
     val canTrigger = state.hasRequiredPermissions && state.isProviderEnabled
-    val hasCallerNumber = when (state.callerInputMode) {
+    val hasCallerNumber = state.isPrivateNumber || when (state.callerInputMode) {
         CallerInputMode.CONTACT -> state.selectedContact?.phoneNumber?.trim().isNullOrEmpty().not()
         CallerInputMode.MANUAL -> state.callerNumber.trim().isNotBlank()
     }
@@ -308,7 +308,9 @@ fun DashboardScreen(
                                 }
                             },
                             onSelectContact = viewModel::selectContact,
-                            onTogglePinned = viewModel::togglePinnedContact
+                            onTogglePinned = viewModel::togglePinnedContact,
+                            isPrivateNumber = state.isPrivateNumber,
+                            onPrivateNumberChange = viewModel::onPrivateNumberChange
                         )
                     }
 
